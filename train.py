@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.decomposition import PCA
-from catboost import CatBoostRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 import pickle
 
@@ -59,7 +59,7 @@ def load_and_preprocess_data(file_path):
     target = df['Calories_sqrt']
     
     # One-hot encode categorical features
-    ohe = OneHotEncoder(sparse=False, drop='first')
+    ohe = OneHotEncoder(drop='first')
     age_group_encoded = ohe.fit_transform(features[['Age_Group']])
     age_group_encoded_df = pd.DataFrame(age_group_encoded, columns=ohe.get_feature_names_out(['Age_Group']))
     features = pd.concat([features.drop(columns=['Age_Group']), age_group_encoded_df], axis=1)
@@ -97,7 +97,7 @@ def train_model(X_train, y_train):
     Returns:
         model (CatBoostRegressor): Trained model.
     """
-    model = CatBoostRegressor(iterations=1000, learning_rate=0.1, depth=6, verbose=0, random_seed=42)
+    model = RandomForestRegressor(random_seed=42)
     model.fit(X_train, y_train)
     return model
 
@@ -127,8 +127,8 @@ def save_model(model, file_name):
 
 if __name__ == "__main__":
     # File paths
-    dataset_path = "calorie_data.csv"  # Replace with your dataset file path
-    model_file_name = "calorie_model.pkl"
+    dataset_path = "Exercise.csv"  # Replace with your dataset file path
+    model_file_name = "model.pkl"
     
     # Load and preprocess data
     X_train, X_test, y_train, y_test = load_and_preprocess_data(dataset_path)
