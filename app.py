@@ -1,11 +1,11 @@
 # Import libraries
 import streamlit as st
-import pickle
+import joblib
 import numpy as np
 
 # Load the trained model
-with open("model.pkl", "rb") as file:
-    model = pickle.load(file)
+with open("model_compressed.joblib", "rb") as file:
+    model = joblib.load(file)
 
 # App Title
 st.title("Calorie Burn Prediction App")
