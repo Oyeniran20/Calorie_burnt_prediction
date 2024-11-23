@@ -59,7 +59,7 @@ def load_and_preprocess_data(file_path):
     target = df['Calories_sqrt']
     
     # One-hot encode categorical features
-    ohe = OneHotEncoder(drop='first')
+    ohe = OneHotEncoder(drop='first', sparse_output=False)
     age_group_encoded = ohe.fit_transform(features[['Age_Group']])
     age_group_encoded_df = pd.DataFrame(age_group_encoded, columns=ohe.get_feature_names_out(['Age_Group']))
     features = pd.concat([features.drop(columns=['Age_Group']), age_group_encoded_df], axis=1)
@@ -95,9 +95,9 @@ def train_model(X_train, y_train):
         X_train (DataFrame): Training features.
         y_train (Series): Training targets.
     Returns:
-        model (CatBoostRegressor): Trained model.
+        model (RandomForestRegressor): Trained model.
     """
-    model = RandomForestRegressor(random_seed=42)
+    model = RandomForestRegressor()
     model.fit(X_train, y_train)
     return model
 
@@ -105,7 +105,7 @@ def evaluate_model(model, X_test, y_test):
     """
     Evaluate the model's performance.
     Args:
-        model (CatBoostRegressor): Trained model.
+        model (RandomForestRegressor): Trained model.
         X_test (DataFrame): Testing features.
         y_test (Series): Testing targets.
     """
@@ -118,7 +118,7 @@ def save_model(model, file_name):
     """
     Save the trained model to a file.
     Args:
-        model (CatBoostRegressor): Trained model.
+        model (RandomForestRegressor): Trained model.
         file_name (str): File name to save the model.
     """
     with open(file_name, "wb") as file:
@@ -141,3 +141,6 @@ if __name__ == "__main__":
     
     # Save the trained model
     save_model(model, model_file_name)
+
+
+# use `python train.py` to execute the code on the prompt
