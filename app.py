@@ -37,3 +37,6 @@ if st.sidebar.button("Predict"):
     
     # Display result
     st.success(f"Estimated Calories Burned: {calories_burned:.2f} kcal")
+
+
+# use `streamlit run app.py` to execute the code on the prompt
